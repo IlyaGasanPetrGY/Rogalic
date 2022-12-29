@@ -318,6 +318,29 @@ int main()
 
     while (window.isOpen())
         {
+
+        for (it = Bullets.begin(); it != Bullets.end(); it++)
+        {
+            (*it)->update(time); //запускаем метод update()
+        }
+
+        for (it = Bullets.begin(); it != Bullets.end(); )//говорим что проходимся от начала до конца
+        {// если этот объект мертв, то удаляем его
+            if ((*it)-> life == false) { it = Bullets.erase(it); }
+            else it++;//и идем курсором (итератором) к след объекту.
+        }
+
+        if(p.life == true){//если игрок жив
+            for (it = enemies.begin(); it != enemies.end(); it++){//бежим по списку врагов
+                if ((p.getRect().intersects((*it)->getRect())) && ((*it)->name == "EasyEnemy"))
+                {
+                    p.health = 0;
+                    std::cout << "you are lose";
+                }
+            }
+        }
+
+
         for (int i = 0; i < HEIGHT_MAP; i++)
             for (int j = 0; j < WIDTH_MAP; j++)
             {
