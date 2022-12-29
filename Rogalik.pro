@@ -5,7 +5,7 @@ CONFIG -= qt
 
 
 
-LIBS += -L"C:\ProgectsNew\Rogalic\SFML-2.3.2\lib"
+LIBS += -L"D:\ProgectsNew\Rogalic\SFML-2.3.2\lib"
 
 CONFIG(release, debug|release):
 LIBS += -lsfml-audio -lsfml-graphics -lsfml-main -lsfml-network -lsfml-window -lsfml-system
