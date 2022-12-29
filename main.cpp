@@ -295,13 +295,12 @@ public:
     }
 };
 
-
 class EnemyBullet :public Entity{//класс пули
 public:
     Entity* point;
     Vector2f* vec;
     int direction;//направление пули
-    Bullet(Image &image, float X, float Y, int W, int H, std::string Name, Entity *dir):Entity(image, X, Y, W, H, Name){
+    EnemyBullet(Image &image, float X, float Y, int W, int H, std::string Name, Entity *dir):Entity(image, X, Y, W, H, Name){
         x = X; //координаты пули на карте игры
         y = Y;
         point = dir;
@@ -378,6 +377,8 @@ int main()
 
     Clock timerSpawnEnemy;
 
+    Clock timerToAttacEnemy;
+
     float maxTimeReload = 2;
 
     int gameTime = 0;//объявили игровое время, инициализировали.
@@ -400,8 +401,10 @@ int main()
 
     std::list<Entity*> enemies; //список врагов
     std::list<Entity*> Bullets; //список пуль
+    std::list<Entity*> BulletsEnem;
     std::list<Entity*>::iterator it; //итератор чтобы проходить по элементам списка
     std::list<Entity*>::iterator it2; //итератор чтобы проходить по элементам списка
+    std::list<Entity*>::iterator it3;
 
     const int ENEMY_COUNT = 3; //максимальное количество врагов в игре
     int enemiesCount = 0;
@@ -420,6 +423,9 @@ int main()
         float timeSpawnEnemyController = timerSpawnEnemy.getElapsedTime().asSeconds();
         float timeReload = reloadTime.getElapsedTime().asSeconds();
         float time = clock.getElapsedTime().asMicroseconds();
+
+        float timeForAtcacEnemy = timerToAttacEnemy.getElapsedTime().asSeconds();
+
 
         if (p.life){
 
@@ -471,6 +477,13 @@ int main()
                 enemies.push_back(RandomGenerationEnemy(easyEnemyImage));
                 timerSpawnEnemy.restart();
             }
+            if (timeForAtcacEnemy > 2){
+                for (it2 = enemies.begin(); it2!= enemies.end();it2++){
+                    BulletsEnem.push_back(new EnemyBullet(BulletImage, (*it2)->x, (*it2)->y, 16, 16, "Bullet", &p));
+                }
+                std::cout << "puff";
+                timerToAttacEnemy.restart();
+            }
 
 
             p.update(time); //оживляем объект “p” класса “Player”
@@ -487,11 +500,22 @@ int main()
                 (*it)->update(time); //запускаем метод update()
             }
 
+            for (it2 = BulletsEnem.begin(); it2!= BulletsEnem.end();it2++){
+                if ((*it2)->life){
+                    (*it2)->update(time);
+                }
+                else{
+                    it = Bullets.erase(it);
+                }
+            }
+
             for (it = Bullets.begin(); it != Bullets.end(); )//говорим что проходимся от начала до конца
             {// если этот объект мертв, то удаляем его
                 if ((*it)-> life == false) { it = Bullets.erase(it); }
                 else it++;//и идем курсором (итератором) к след объекту.
             }
+
+
 
 
             if(p.life == true){//если игрок жив
@@ -502,7 +526,18 @@ int main()
                         std::cout << "you are lose";
                     }
                 }
+
+
+                for (it = BulletsEnem.begin(); it != BulletsEnem.end(); it++){//бежим по списку врагов
+                    if ((p.getRect().intersects((*it)->getRect())))
+                    {
+                        p.health = 0;
+                        std::cout << "you are lose";
+                    }
+                }
             }
+
+
 
             window.clear();
 
@@ -564,8 +599,14 @@ int main()
                         }
                 }
 
-
             //запускаем метод update()
+            }
+
+;
+            for (it2 = BulletsEnem.begin(); it2!= BulletsEnem.end(); it2++){
+                if ((*it2)->life){
+                    window.draw((*it2)->sprite);
+                }
             }
 
             for (it = Bullets.begin(); it != Bullets.end(); it++)
