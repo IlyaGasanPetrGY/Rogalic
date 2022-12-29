@@ -302,6 +302,19 @@ int main()
 
     Player p(heroImage, 100, 100, 96, 96, "Player1");
 
+    std::list<Entity*> enemies; //список врагов
+    std::list<Entity*> Bullets; //список пуль
+    std::list<Entity*>::iterator it; //итератор чтобы проходить по элементам списка
+    std::list<Entity*>::iterator it2; //итератор чтобы проходить по элементам списка
+
+    const int ENEMY_COUNT = 3; //максимальное количество врагов в игре
+    int enemiesCount = 0;
+
+    for (int i = 0; i < ENEMY_COUNT; i++)
+    {
+        enemies.push_back(RandomGenerationEnemy(easyEnemyImage));
+    }
+
 
     while (window.isOpen())
         {
