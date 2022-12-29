@@ -319,6 +319,14 @@ int main()
     while (window.isOpen())
         {
 
+
+        p.update(time); //оживляем объект “p” класса “Player”
+
+        for (it = enemies.begin(); it != enemies.end(); it++)
+        {
+            (*it)->update(time); //запускаем метод update()
+        }
+
         for (it = Bullets.begin(); it != Bullets.end(); it++)
         {
             (*it)->update(time); //запускаем метод update()
