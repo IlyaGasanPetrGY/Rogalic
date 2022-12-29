@@ -296,6 +296,46 @@ public:
 };
 
 
+class EnemyBullet :public Entity{//класс пули
+public:
+    Entity* point;
+    Vector2f* vec;
+    int direction;//направление пули
+    Bullet(Image &image, float X, float Y, int W, int H, std::string Name, Entity *dir):Entity(image, X, Y, W, H, Name){
+        x = X; //координаты пули на карте игры
+        y = Y;
+        point = dir;
+        speed = 0.2;
+        w = h = 16; //размеры изображения пули
+        life = true; //пуля жива
+
+        vec = new sf::Vector2f();
+        vec->x = point->x - x;
+        vec->y = point->y - y;
+        float xx = vec->x/sqrt(pow(vec->x,2) + pow(vec->y,2));
+        vec->x = xx;
+        float yy = vec->y/sqrt(pow(vec->x,2) + pow(vec->y,2));
+        vec->y = yy;
+    }
+    void update(float time)
+        {
+
+
+
+        if (life){ // если пуля жива
+            x += vec->x*time*speed;//само движение пули по х
+            y += vec->y*time*speed;//по у
+
+            for (int i = y / 32; i < (y + h) / 32; i++)//проходимся по элементам карты
+                for (int j = x / 32; j < (x + w) / 32; j++)
+                {
+                    if (TileMap[i][j] == '0')//если элемент наш тайлик земли, то
+                        life = false;// то пуля умирает
+                }
+                sprite.setPosition(x + w / 2, y + h / 2); //задается позицию пули
+        }
+    }
+};
 
 Enemy* RandomGenerationEnemy(Image easyEnemyImage){
 
