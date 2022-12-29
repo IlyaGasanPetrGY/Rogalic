@@ -278,6 +278,36 @@ Enemy* RandomGenerationEnemy(Image easyEnemyImage){
 
 int main()
 {
+    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+    sf::RenderWindow window(sf::VideoMode(800, 640, desktop.bitsPerPixel), "Lesson 14");
+
+    Font font;//шрифт
+    font.loadFromFile("CyrilicOld.ttf");//передаем нашему шрифту файл шрифта
+    Text text("", font, 20);//создаем объект текст
+    text.setColor(Color::Green);
+
+    //покрасили текст в красный
+    text.setStyle(Text::Bold);//жирный текст.
+
+    Image map_image;//объект изображения для карты
+    map_image.loadFromFile("images/map.png");//загружаем файл для карты
+    Texture map;//текстура карты
+
+    map.loadFromImage(map_image);//заряжаем текстуру картинкой
+    Sprite s_map;//создаём спрайт для карты
+    s_map.setTexture(map);//заливаем текстуру спрайтом
+
+
+    Image heroImage;
+    heroImage.loadFromFile("images/heromain.png"); // загружаем изображение игрока
+
+    Player p(heroImage, 100, 100, 96, 96, "Player1");
+
+
+    while (window.isOpen())
+        {
+
+         }
 
     return 0;
 }
