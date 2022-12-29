@@ -481,7 +481,6 @@ int main()
                 for (it2 = enemies.begin(); it2!= enemies.end();it2++){
                     BulletsEnem.push_back(new EnemyBullet(BulletImage, (*it2)->x, (*it2)->y, 16, 16, "Bullet", &p));
                 }
-                std::cout << "puff";
                 timerToAttacEnemy.restart();
             }
 
@@ -587,7 +586,6 @@ int main()
                     for (it2 = enemies.begin(); it2 != enemies.end(); it2++){
                         if ((*it)->life && (*it2)->life){
                             if ((*it)->getRect().intersects((*it2)->getRect())){
-                                std::cout << "kill";
                                 (*it)->life = false;
                                 delete *it;
                                 it = Bullets.erase(it);
@@ -620,7 +618,7 @@ int main()
             }
         else{
                 window.close();
-                std::cout << "youre score: " << p.playerScore;
+                std::cout << "youre score: " << p.playerScore << std::endl;
             }
         }
     return 0;
